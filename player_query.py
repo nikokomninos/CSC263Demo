@@ -1,0 +1,109 @@
+def query_players_by_wins(conn):
+    """Query players with more wins than losses using GROUP BY and HAVING.
+
+    Args:
+        conn: Active MySQL database connection
+    """
+    cur = conn.cursor(dictionary=True)
+    print("\n--- Players with More Wins than Losses ---")
+
+    cur.execute("""
+        SELECT ID, Name, Wins, Losses, (Wins + Losses) as TotalGames
+        FROM players
+        GROUP BY ID, Name, Wins, Losses
+        HAVING Wins > Losses
+        ORDER BY Wins DESC
+    """)
+
+    print(f"{'ID':<15} {'Name':<20} {'Wins':<8} {'Losses':<8} {'Total Games':<12}")
+    print("-" * 70)
+    for row in cur.fetchall():
+        print(
+            f"{row['ID']:<15} {row['Name']:<20} {row['Wins']:<8} {row['Losses']:<8} {row['TotalGames']:<12}"
+        )
+
+    cur.close()
+
+
+def query_players_by_gold(conn):
+    """Query players with gold above average using a sub-query.
+
+    Args:
+        conn: Active MySQL database connection
+    """
+    cur = conn.cursor(dictionary=True)
+    print("\n--- Players with Gold Above Average ---")
+
+    cur.execute("""
+        SELECT ID, Name, Gold, (SELECT AVG(Gold) FROM players) as AvgGold
+        FROM players
+        WHERE Gold > (SELECT AVG(Gold) FROM players)
+        ORDER BY Gold DESC
+    """)
+
+    print(f"{'ID':<15} {'Name':<20} {'Gold':<8} {'Avg Gold':<10}")
+    print("-" * 60)
+    for row in cur.fetchall():
+        print(
+            f"{row['ID']:<15} {row['Name']:<20} {row['Gold']:<8} {row['AvgGold']:<10.2f}"
+        )
+
+    cur.close()
+
+
+def query_top_players(conn):
+    """Query the top 5 players by wins.
+
+    Args:
+        conn: Active MySQL database connection
+    """
+    cur = conn.cursor(dictionary=True)
+    print("\n--- Top 5 Players by Wins ---")
+
+    cur.execute("""
+        SELECT ID, Name, Wins, Losses, Gold
+        FROM players
+        ORDER BY Wins DESC
+        LIMIT 5
+    """)
+
+    print(f"{'ID':<15} {'Name':<20} {'Wins':<8} {'Losses':<8} {'Gold':<8}")
+    print("-" * 65)
+    for row in cur.fetchall():
+        print(
+            f"{row['ID']:<15} {row['Name']:<20} {row['Wins']:<8} {row['Losses']:<8} {row['Gold']:<8}"
+        )
+
+    cur.close()
+
+
+def query_all_players_with_stats(conn):
+    """Query all players with statistics using LEFT OUTER JOIN.
+
+    Args:
+        conn: Active MySQL database connection
+    """
+    cur = conn.cursor(dictionary=True)
+    print("\n--- All Players with Stats (LEFT OUTER JOIN) ---")
+
+    cur.execute("""
+        SELECT p.ID, p.Name, p.Color, p.Wins, p.Losses, p.Gold,
+               s.AvgWins as OverallAvgWins
+        FROM players p
+        LEFT OUTER JOIN (
+            SELECT AVG(Wins) as AvgWins
+            FROM players
+        ) s ON 1=1
+        ORDER BY p.Name
+    """)
+
+    print(
+        f"{'ID':<15} {'Name':<20} {'Color':<15} {'Wins':<8} {'Losses':<8} {'Gold':<8} {'Avg Wins':<10}"
+    )
+    print("-" * 95)
+    for row in cur.fetchall():
+        print(
+            f"{row['ID']:<15} {row['Name']:<20} {row['Color']:<15} {row['Wins']:<8} {row['Losses']:<8} {row['Gold']:<8} {row['OverallAvgWins']:<10.2f}"
+        )
+
+    cur.close()
