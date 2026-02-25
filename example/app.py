@@ -6,8 +6,8 @@ from player_manager import (
     list_players,
     update_player_score,
 )
-from player_stats import query_player_stats
-from player_query import (
+from player_stats import (
+    query_player_stats,
     query_players_by_wins,
     query_players_by_gold,
     query_top_players,

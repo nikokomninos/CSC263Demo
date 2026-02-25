@@ -32,6 +32,28 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Create log table for nightly batch process
+CREATE TABLE IF NOT EXISTS score_log (
+    LogID INT AUTO_INCREMENT PRIMARY KEY,
+    LogDate DATE,
+    PlayerID varchar(20),
+    PlayerName varchar(100),
+    Wins INT,
+    Losses INT,
+    Gold INT
+);
+
+-- Stored procedure for nightly batch process - log end of day scores
+DELIMITER //
+CREATE PROCEDURE LogEndOfDayScores()
+BEGIN
+    INSERT INTO score_log (LogDate, PlayerID, PlayerName, Wins, Losses, Gold)
+    SELECT CURDATE(), ID, Name, Wins, Losses, Gold
+    FROM players
+    WHERE Wins > 20;
+END //
+DELIMITER ;
+
 -- Insert sample data
 INSERT INTO players (ID, Name, Color, Wins, Losses, Gold) VALUES
 ('P001', 'James Anderson', 'Red', 15, 8, 450),

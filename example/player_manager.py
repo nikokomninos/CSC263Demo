@@ -41,15 +41,34 @@ def change_player(conn):
         return
 
     print(f"Current player data: {player}")
-    new_name = input(f"Enter new Name (current: {player['Name']}): ")
-    new_color = input(f"Enter new Color (current: {player['Color']}): ")
-    new_wins = input(f"Enter new Wins (current: {player['Wins']}): ")
-    new_losses = input(f"Enter new Losses (current: {player['Losses']}): ")
-    new_gold = input(f"Enter new Gold (current: {player['Gold']}): ")
+    print("\nWhich field would you like to change?")
+    print("1. Name")
+    print("2. Color")
+    print("3. Wins")
+    print("4. Losses")
+    print("5. Gold")
+
+    field_choice = input("Enter your choice (1-5): ")
+
+    field_map = {
+        "1": "Name",
+        "2": "Color",
+        "3": "Wins",
+        "4": "Losses",
+        "5": "Gold",
+    }
+
+    if field_choice not in field_map:
+        print("Invalid choice!")
+        cur.close()
+        return
+
+    field_name = field_map[field_choice]
+    new_value = input(f"Enter new {field_name} (current: {player[field_name]}): ")
 
     cur.execute(
-        "UPDATE players SET Name = %s, Color = %s, Wins = %s, Losses = %s, Gold = %s WHERE ID = %s",
-        (new_name, new_color, new_wins, new_losses, new_gold, player_id),
+        f"UPDATE players SET {field_name} = %s WHERE ID = %s",
+        (new_value, player_id),
     )
     conn.commit()
     print("Player updated successfully!")
