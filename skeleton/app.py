@@ -20,7 +20,7 @@ conn = mysql.connector.connect(
     port=3306,
     user="your_username",
     password="",
-    database="your_database"
+    database="your_database",
 )
 
 
@@ -35,9 +35,9 @@ def main():
         # 4. List Players
         # 5. Update Player Score (Stored Procedure)
         # 6. Player Statistics (Stored Procedure)
-        # 7. Additional Query 1 (GROUP BY and HAVING)
+        # 7. Additional Query 1 (GROUP BY)
         # 8. Additional Query 2 (Sub-query)
-        # 9. Additional Query 3 (Simple SELECT with ORDER BY)
+        # 9. Additional Query 3 (HAVING)
         # 10. Additional Query 4 (LEFT OUTER JOIN)
         # 11. Exit
 

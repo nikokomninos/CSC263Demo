@@ -21,27 +21,28 @@ def query_player_stats(conn):
 
 
 def query_players_by_wins(conn):
-    """Query players with more wins than losses using GROUP BY and HAVING.
+    """Query players grouped by wins using GROUP BY.
 
     Args:
         conn: Active MySQL database connection
     """
     cur = conn.cursor(dictionary=True)
-    print("\n--- Players with More Wins than Losses ---")
+    print("\n--- Players Grouped by Wins ---")
 
     cur.execute("""
-        SELECT ID, Name, Wins, Losses, (Wins + Losses) as TotalGames
+        SELECT ID, Name, Wins, Losses, (Wins + Losses) as TotalGames, Color
         FROM players
-        GROUP BY ID, Name, Wins, Losses
-        HAVING Wins > Losses
+        GROUP BY Wins
         ORDER BY Wins DESC
     """)
 
-    print(f"{'ID':<15} {'Name':<20} {'Wins':<8} {'Losses':<8} {'Total Games':<12}")
-    print("-" * 70)
+    print(
+        f"{'ID':<15} {'Name':<20} {'Color':<15} {'Wins':<8} {'Losses':<8} {'Total Games':<12}"
+    )
+    print("-" * 95)
     for row in cur.fetchall():
         print(
-            f"{row['ID']:<15} {row['Name']:<20} {row['Wins']:<8} {row['Losses']:<8} {row['TotalGames']:<12}"
+            f"{row['ID']:<15} {row['Name']:<20} {row['Color']:<15} {row['Wins']:<8} {row['Losses']:<8} {row['TotalGames']:<12}"
         )
 
     cur.close()
@@ -74,26 +75,29 @@ def query_players_by_gold(conn):
 
 
 def query_top_players(conn):
-    """Query top 5 players by wins.
+    """Query players using HAVING clause.
 
     Args:
         conn: Active MySQL database connection
     """
     cur = conn.cursor(dictionary=True)
-    print("\n--- Top 5 Players by Wins ---")
+    print("\n--- High-Winning Players (HAVING) ---")
 
     cur.execute("""
-        SELECT ID, Name, Wins, Losses, Gold
+        SELECT ID, Name, Wins, Losses, Gold, (Wins + Losses) as TotalGames
         FROM players
+        GROUP BY ID, Name, Wins, Losses, Gold
+        HAVING Wins > 20
         ORDER BY Wins DESC
-        LIMIT 5
     """)
 
-    print(f"{'ID':<15} {'Name':<20} {'Wins':<8} {'Losses':<8} {'Gold':<8}")
-    print("-" * 65)
+    print(
+        f"{'ID':<15} {'Name':<20} {'Wins':<8} {'Losses':<8} {'Gold':<8} {'Total Games':<12}"
+    )
+    print("-" * 95)
     for row in cur.fetchall():
         print(
-            f"{row['ID']:<15} {row['Name']:<20} {row['Wins']:<8} {row['Losses']:<8} {row['Gold']:<8}"
+            f"{row['ID']:<15} {row['Name']:<20} {row['Wins']:<8} {row['Losses']:<8} {row['Gold']:<8} {row['TotalGames']:<12}"
         )
 
     cur.close()

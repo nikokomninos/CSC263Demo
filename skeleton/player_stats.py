@@ -13,14 +13,14 @@ def query_player_stats(conn):
 
 
 def additional_query_1(conn):
-    """Additional query 1 - GROUP BY and HAVING.
+    """Additional query 1 - GROUP BY.
 
     Args:
         conn: Active MySQL database connection
     """
-    # GROUP BY and HAVING
+    # GROUP BY
     # Create a cursor with dictionary=True
-    # Write a SELECT query using GROUP BY and HAVING
+    # Write a SELECT query using GROUP BY
     # Print header row
     # Loop through results and print each player
     # Close cursor
@@ -43,14 +43,14 @@ def additional_query_2(conn):
 
 
 def additional_query_3(conn):
-    """Additional query 3 - Simple SELECT with ORDER BY.
+    """Additional query 3 - HAVING.
 
     Args:
         conn: Active MySQL database connection
     """
-    # Simple SELECT with ORDER BY
+    # HAVING
     # Create a cursor with dictionary=True
-    # Write a SELECT query with ORDER BY and LIMIT
+    # Write a SELECT query using HAVING
     # Print header row
     # Loop through results and print each player
     # Close cursor

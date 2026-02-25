@@ -32,9 +32,9 @@ def main():
         print("4. List Players")
         print("5. Update Player Score (Stored Procedure)")
         print("6. Player Statistics (Stored Procedure)")
-        print("7. Players with More Wins than Losses")
-        print("8. Players with Gold Above Average")
-        print("9. Top 5 Players by Wins")
+        print("7. Players Grouped by Wins (GROUP BY)")
+        print("8. Players with Gold Above Average (Sub-query)")
+        print("9. High-Winning Players (HAVING)")
         print("10. All Players with Stats (LEFT OUTER JOIN)")
         print("11. Exit")
 
